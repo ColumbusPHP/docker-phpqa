@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  phpqa:
+    build: phpqa
+    volumes:
+      - "./php/src:/usr/src/php"

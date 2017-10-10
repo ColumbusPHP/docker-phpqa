@@ -1,0 +1,8 @@
+# IDEs
+/.vscode/
+/.vs/
+/.idea/
+/nbproject/
+
+.DS_Store
+/phpqa/php
