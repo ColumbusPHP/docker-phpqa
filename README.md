@@ -22,12 +22,12 @@ Make sure you have the following installed:
 We want to download the PHP source via Git so that we can easily edit it before running the container.
 
 * Windows:
-   * Use either TortoisGit, git-bash or babun/cygwin with Git installed to clone `https://github.com/php/php-src.git` into `phpqa/php` directory.
+   * Use either TortoisGit, git-bash or babun/cygwin with Git installed to clone `https://github.com/php/php-src.git`.
 * MacOS/Linux:
    * Use git via the command-line.
 
 Commands regardless of operating system:
-* `git clone --branch PHP-7.2 https://github.com/php/php-src.git phpqa/php`
+* `git clone --branch PHP-7.2 https://github.com/php/php-src.git`
 
 ### 3. Run the container
 
@@ -38,6 +38,8 @@ Commands regardless of operating system:
 * MacOS/Linux:
    * Browse to this directory in a terminal
    * Then run `docker-compose up`
+
+Test output should be visible afterward.
 
 ## Managing Docker
 
@@ -51,7 +53,16 @@ Run `docker-compose down` to remove everything and start from scratch.
 
 Run `docker-compose restart` after you've made some changes in phpqa/php locally such as adding a test.
 
-### Inspecting and running tests
+### Running one test
 
-Run `docker-compose run php bash` to go into the container.
-Then `cd /usr/src/php` and run `make test` or `make test TESTS=/path/to/phptest`
+1. Open docker-compose.yml in your favorite editor.
+2. Find the `PHPQA_TESTS:` line and add the path to the test there
+
+```
+    environments:
+      PHPQA_TESTS: "tests/basic/001.phpt"
+```
+
+Then run `docker-compose up` again :-)
+
+

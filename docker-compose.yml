@@ -3,5 +3,11 @@ version: "3"
 services:
   phpqa:
     build: phpqa
+    working_dir: "/usr/src/php"
+    command: "/bin/bash /usr/local/bin/phpqa.sh"
+    tty: true
     volumes:
-      - "./php/src:/usr/src/php"
+      - "./php-src:/usr/src/php"
+    environment:
+      PHPQA_TESTS: ""
+

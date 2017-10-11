@@ -2,8 +2,10 @@ FROM debian:jessie
 
 ENV PHPIZE_DEPS \
 		autoconf \
+        bison \
 		dpkg-dev \
 		file \
+        flex \
 		g++ \
 		gcc \
 		libc-dev \
@@ -38,8 +40,6 @@ RUN set -xe; \
 	cd /usr/src; \
 	apt-get purge -y --auto-remove $fetchDeps
 
-COPY scripts/docker-php-* /usr/local/bin/
-
 RUN set -xe \
 	&& buildDeps=" \
 		$PHP_EXTRA_BUILD_DEPS \
@@ -49,39 +49,9 @@ RUN set -xe \
 		libssl-dev \
 		libxml2-dev \
 	" \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	&& export CFLAGS="$PHP_CFLAGS" \
-		CPPFLAGS="$PHP_CPPFLAGS" \
-		LDFLAGS="$PHP_LDFLAGS" \
-	&& docker-php-source extract \
-	&& cd /usr/src/php \
-	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-	&& debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)" \
-	&& ./configure \
-		--build="$gnuArch" \
-		--with-config-file-path="$PHP_INI_DIR" \
-		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
-		--enable-ftp \
-		--enable-mbstring \
-		--enable-mysqlnd \
-		--with-curl \
-		--with-libedit \
-		--with-openssl \
-		--with-zlib \
-		--with-pcre-regex=/usr \
-		--with-libdir="lib/$debMultiarch" \
-		$PHP_EXTRA_CONFIGURE_ARGS \
-	&& make -j "$(nproc)" \
-	&& make install \
-	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
-	&& cd / \
-	&& pecl update-channels \
-	&& rm -rf /tmp/pear ~/.pearrc
+	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-RUN cd /usr/src/php/scripts/dev \
-    && rm generate-phpt.phar \
-    && php -d phar.readonly=0 generate-phpt/gtPackage.php \
-    && cd /
+ADD actions /usr/local/bin
 
 WORKDIR /usr/src/php/
-CMD ["/bin/bash"]
+CMD ["/usr/local/bin/phpqa.sh"]
