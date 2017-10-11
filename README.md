@@ -16,6 +16,9 @@ Make sure you have the following installed:
       * https://store.docker.com/editions/community/docker-ce-desktop-mac 
    3. Linux
       * Either get docker and docker-compose packages for your distribution or compile those from source.
+      * If you do not have docker-compose, you can use the following Makefile to install it via pip automatically:
+         * `make`
+         * `. env/bin/activate`
 
 ### 2. Download PHP Source
 
