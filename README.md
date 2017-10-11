@@ -68,4 +68,11 @@ Run `docker-compose restart` after you've made some changes in phpqa/php locally
 
 Then run `docker-compose up` again :-)
 
+## Creating a test
 
+Sometimes the generatephpt.phar is bad so you need to rebuild it locally.
+
+- `cd php-src/scripts/dev/generate-phpt`
+- `rm ../generate-phpt.phar`
+- `php gtPackage.php`
+   - This may require changes to php.ini to allow phar.readonly to be Off.
